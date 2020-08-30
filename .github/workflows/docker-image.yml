@@ -1,0 +1,27 @@
+name: Docker Image CD
+
+on:
+  push:
+    branches: [ master ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: docker login
+      env:
+        DOCKER_USER: ${{ secrets.DOCKER_USER }}   
+        DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}  
+      run: |
+        docker login -u $DOCKER_USER -p $DOCKER_PASSWORD
+    - name: docker build 
+      run: |
+        docker build . -t ofirshturll/example-docker:latest
+        docker tag ofirshturll:latest ofirshturll/example-docker:$(date +%s)
+    - name: docker push
+      run: |
+        docker push ofirshturll/example-docker:latest
+        docker push ofirshturll/example-docker:$(date +%s)
+
+
