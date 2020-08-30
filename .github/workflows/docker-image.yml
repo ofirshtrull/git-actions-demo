@@ -17,11 +17,11 @@ jobs:
         docker login -u $DOCKER_USER -p $DOCKER_PASSWORD
     - name: docker build 
       run: |
-        docker build . -t ofirshturll/example-docker:latest
-        docker tag ofirshturll:latest ofirshturll/example-docker:$(date +%s)
+        docker build . -t shturll/example-docker:latest
+        docker tag shturll:latest shturll/example-docker:$(date +%s)
     - name: docker push
       run: |
-        docker push ofirshturll/example-docker:latest
-        docker push ofirshturll/example-docker:$(date +%s)
+        docker push shturll/example-docker:latest
+        docker push shturll/example-docker:$(date +%s)
 
 
