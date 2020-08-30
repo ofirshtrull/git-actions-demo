@@ -28,9 +28,9 @@ jobs:
       run: docker build . -t shtrull/example-docker:latest
 
     - name: docker tag by commit hash
-      run: docker tag shtrull/example-docker:latest shtrull/example-docker:${{ SHA }}
+      run: docker tag shtrull/example-docker:latest shtrull/example-docker:$SHA
 
     - name: docker push (multiple lines)
       run: |
         docker push shtrull/example-docker:latest
-        docker push shtrull/example-docker:${{ SHA }}
+        docker push shtrull/example-docker:$SHA
