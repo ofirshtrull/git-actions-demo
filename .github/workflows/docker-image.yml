@@ -7,10 +7,8 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-    env:
-      SHA: $(git rev-parse --short HEAD)
-    steps:
 
+    steps:
     - uses: actions/checkout@v2
     - name: docker login
       env:
@@ -27,9 +25,9 @@ jobs:
       run: docker build . -t shtrull/example-docker:latest
 
     - name: docker tag by commit hash
-      run: docker tag shtrull/example-docker:latest "shtrull/example-docker:${{ SHA }}"
+      run: docker tag shtrull/example-docker:latest "shtrull/example-docker:$(git rev-parse --short HEAD)"
 
     - name: docker push (multiple lines)
       run: |
         docker push "shtrull/example-docker:latest"
-        docker push "shtrull/example-docker:${{ SHA }}"
+        docker push "shtrull/example-docker:$(git rev-parse --short HEAD)"
