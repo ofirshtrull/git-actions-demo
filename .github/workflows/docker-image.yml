@@ -8,7 +8,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     env:
-      SHA: ${GITHUB_SHA:8}
+      SHA: "${GITHUB_SHA:8}"
     steps:
 
     - uses: actions/checkout@v2
@@ -18,19 +18,18 @@ jobs:
         DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
       run: docker login -u $DOCKER_USER -p $DOCKER_PASSWORD
 
-    - name: Declare some variables
+    - name: Declare variables
       id: vars
       shell: bash
-      run: |
-        GITHUB_SHA_SHORT=$(echo $GITHUB_SHA | cut -c1-8)
+      run: GITHUB_SHA_SHORT=$(echo $GITHUB_SHA | cut -c1-8)
 
     - name: docker build
       run: docker build . -t shtrull/example-docker:latest
 
     - name: docker tag by commit hash
-      run: docker tag shtrull/example-docker:latest shtrull/example-docker:$SHA
+      run: docker tag shtrull/example-docker:latest "shtrull/example-docker:$SHA"
 
     - name: docker push (multiple lines)
       run: |
-        docker push shtrull/example-docker:latest
-        docker push shtrull/example-docker:$SHA
+        docker push "shtrull/example-docker:latest"
+        docker push "shtrull/example-docker:$SHA"
