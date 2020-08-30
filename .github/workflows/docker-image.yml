@@ -15,16 +15,20 @@ jobs:
         DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
       run: docker login -u $DOCKER_USER -p $DOCKER_PASSWORD
 
-    - name: env
-      run: env
+    - name: Declare some variables
+      id: vars
+      shell: bash
+      run: |
+        GITHUB_SHA_SHORT=$(echo $GITHUB_SHA | cut -c1-8)
+
 
     - name: docker build
       run: docker build . -t shtrull/example-docker:latest
 
     - name: docker tag by date
-      run: docker tag shtrull/example-docker:latest shtrull/example-docker:$(date +%s)
+      run: docker tag shtrull/example-docker:latest shtrull/example-docker:${GITHUB_SHA_SHORT}
 
     - name: docker push
       run: |
         docker push shtrull/example-docker:latest
-        docker push shtrull/example-docker:$(date +%s)
+        docker push shtrull/example-docker:${GITHUB_SHA_SHORT}
