@@ -7,7 +7,10 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    env:
+      SHA1: ${GITHUB_SHA::8}
     steps:
+
     - uses: actions/checkout@v2
     - name: docker login
       env:
@@ -21,14 +24,13 @@ jobs:
       run: |
         GITHUB_SHA_SHORT=$(echo $GITHUB_SHA | cut -c1-8)
 
-
     - name: docker build
       run: docker build . -t shtrull/example-docker:latest
 
     - name: docker tag by date
-      run: docker tag shtrull/example-docker:latest shtrull/example-docker:${GITHUB_SHA_SHORT}
+      run: docker tag shtrull/example-docker:latest shtrull/example-docker:${SHA1}
 
     - name: docker push
       run: |
         docker push shtrull/example-docker:latest
-        docker push shtrull/example-docker:${GITHUB_SHA_SHORT}
+        docker push shtrull/example-docker:${SHA1}
