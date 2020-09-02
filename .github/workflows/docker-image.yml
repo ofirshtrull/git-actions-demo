@@ -24,6 +24,10 @@ jobs:
     - name: docker build
       run: docker build . -t shtrull/example-docker:latest
 
+    - uses: Azure/container-scan@v0
+      with:
+        image-name: shtrull/example-docker:latest
+
     - name: docker tag by commit hash
       run: docker tag shtrull/example-docker:latest "shtrull/example-docker:${{ steps.vars.outputs.sha_short }}"
 
